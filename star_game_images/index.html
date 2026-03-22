@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>נחשי איפה הכוכב</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-box">
+    <h1>נחשי איפה הכוכב ⭐</h1>
+    <p>לחצי על אחת התמונות</p>
+
+    <div class="grid">
+      <img onclick="checkStar(0)" id="img0" alt="card 1">
+      <img onclick="checkStar(1)" id="img1" alt="card 2">
+      <img onclick="checkStar(2)" id="img2" alt="card 3">
+      <img onclick="checkStar(3)" id="img3" alt="card 4">
+      <img onclick="checkStar(4)" id="img4" alt="card 5">
+      <img onclick="checkStar(5)" id="img5" alt="card 6">
+    </div>
+
+    <div id="message"></div>
+    <div id="score">ניקוד: 0</div>
+
+    <button onclick="restartGame()">משחק חדש</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
