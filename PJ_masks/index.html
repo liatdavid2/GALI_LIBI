@@ -11,39 +11,36 @@
       font-family: Arial, sans-serif;
       color: white;
 
-      /* Gradient background */
-      background: linear-gradient(
-        90deg,
-        #00ff88 0%,
-        #1e90ff 50%,
-        #ff2d55 100%
-      );
-
+      background: linear-gradient(90deg,#00ff88 0%,#1e90ff 50%,#ff2d55 100%);
       min-height: 100vh;
     }
 
+    /* HERO FULL WIDTH */
     .hero {
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 80vh;
-      text-align: center;
+      padding: 20px 0;
     }
 
     .hero img {
-      max-width: 600px;
-      width: 90%;
+      width: 100%;
+      max-width: 1200px;
+      height: auto;
+      object-fit: contain;
 
-      filter: drop-shadow(0 0 40px rgba(255,255,255,0.7));
+      filter: drop-shadow(0 0 30px rgba(255,255,255,0.6));
       transition: 0.3s;
     }
 
     .hero img:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
 
+    /* SECTION */
     .section {
-      padding: 40px 20px;
+      padding: 30px 16px;
       text-align: center;
     }
 
@@ -52,11 +49,12 @@
       margin-bottom: 20px;
     }
 
+    /* VIDEO GRID */
     .videos {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 1200px;
       margin: auto;
     }
 
@@ -67,12 +65,40 @@
       border: none;
     }
 
+    /* RESPONSIVE */
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      .section h2 {
+        font-size: 1.6rem;
+      }
+
+      iframe {
+        height: 180px;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 500px) {
+      .hero {
+        padding: 10px 0;
+      }
+
+      .section {
+        padding: 20px 12px;
+      }
+
+      iframe {
+        height: 160px;
+      }
+    }
+
   </style>
 </head>
 
 <body>
 
-  <!-- HERO IMAGE -->
+  <!-- HERO IMAGE FULL WIDTH -->
   <div class="hero">
     <img src="https://mesibalend.co.il/wp-content/uploads/2021/12/PJ.png" alt="PJ Masks">
   </div>
@@ -82,8 +108,11 @@
     <h2>🎬 סרטונים</h2>
 
     <div class="videos">
-
-      <!-- Replace videos here -->
+        <iframe
+            src="https://www.youtube.com/embed/xs62_c-YfRc?si=Z35ZHg3Sjt_llA4x"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
       <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
 
       <iframe src="https://www.youtube.com/embed/TcMBFSGVi1c" allowfullscreen></iframe>
