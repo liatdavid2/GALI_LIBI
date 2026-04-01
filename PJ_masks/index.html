@@ -195,12 +195,23 @@ body {
 </div>
 
 <script>
+function stopAllVideos() {
+  const iframes = document.querySelectorAll('iframe');
+  iframes.forEach((iframe) => {
+    const src = iframe.src;
+    iframe.src = src; // reload → stops video
+  });
+}
+
 function enableSound() {
+  stopAllVideos();
   document.getElementById('mainVideo').src = "https://www.youtube.com/embed/BEpLqsbAnEM?autoplay=1&mute=0";
 }
 
 function unmute(id, videoId) {
+  stopAllVideos();
   document.getElementById(id).src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
+}?autoplay=1&mute=0`;
 }
 
 function goFullscreen(id) {
