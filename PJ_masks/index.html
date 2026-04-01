@@ -41,16 +41,6 @@ body {
   max-width: 500px;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-}
-
 .btn {
   margin-top: 10px;
   display: inline-block;
@@ -67,11 +57,6 @@ body {
   text-align: center;
 }
 
-.section h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
 .videos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -84,22 +69,11 @@ body {
   background: rgba(0,0,0,0.3);
   border-radius: 12px;
   overflow: hidden;
-  transition: 0.3s;
-}
-
-.video-card:hover {
-  transform: translateY(-5px);
 }
 
 .video-card iframe {
   width: 100%;
   height: 180px;
-  border: none;
-}
-
-.video-title {
-  padding: 10px;
-  font-weight: bold;
 }
 
 .video-actions {
@@ -111,24 +85,7 @@ body {
   background: #2d7dff;
   border-radius: 6px;
   cursor: pointer;
-  display: inline-block;
   margin: 4px;
-}
-
-@media (max-width: 600px) {
-  .hero {
-    height: 50vh;
-    min-height: 300px;
-  }
-
-  .hero-content {
-    right: 20px;
-    bottom: 20px;
-  }
-
-  .hero h1 {
-    font-size: 1.6rem;
-  }
 }
 </style>
 </head>
@@ -136,17 +93,11 @@ body {
 <body>
 
 <div class="hero">
-  <iframe id="mainVideo"
-    src="https://www.youtube.com/embed/BEpLqsbAnEM?autoplay=1&mute=1"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+  <iframe id="mainVideo" src="https://www.youtube.com/embed/BEpLqsbAnEM?mute=1"></iframe>
 
   <div class="hero-content">
-    <h1>הרפתקה מתחילה כאן</h1>
-    <p>צפו בסרטון המרכזי והצטרפו לעולם של גיבורים צבעוניים</p>
-    <div class="btn" onclick="enableSound()">🔊 הפעל קול</div>
-    <div class="btn" onclick="goFullscreenIframe('mainVideo')">⛶ מסך מלא</div>
+    <div class="btn" onclick="toggleVideo('mainVideo','BEpLqsbAnEM', this)">▶ הפעל</div>
+    <div class="btn" onclick="goFullscreenIframe('mainVideo')">⛶</div>
   </div>
 </div>
 
@@ -157,36 +108,32 @@ body {
 
     <div class="video-card">
       <iframe id="vid1" src="https://www.youtube.com/embed/YhYBe4WMEMU?mute=1"></iframe>
-      <div class="video-title">ילד חתול</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid1','YhYBe4WMEMU')">🔊</div>
+        <div class="small-btn" onclick="toggleVideo('vid1','YhYBe4WMEMU', this)">▶</div>
         <div class="small-btn" onclick="goFullscreenIframe('vid1')">⛶</div>
       </div>
     </div>
 
     <div class="video-card">
       <iframe id="vid2" src="https://www.youtube.com/embed/b4W6Tgjha8Q?mute=1"></iframe>
-      <div class="video-title">גיאקו</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid2','b4W6Tgjha8Q')">🔊</div>
+        <div class="small-btn" onclick="toggleVideo('vid2','b4W6Tgjha8Q', this)">▶</div>
         <div class="small-btn" onclick="goFullscreenIframe('vid2')">⛶</div>
       </div>
     </div>
 
     <div class="video-card">
       <iframe id="vid3" src="https://www.youtube.com/embed/GDe2DBYEX3I?mute=1"></iframe>
-      <div class="video-title">ינשופונת</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid3','GDe2DBYEX3I')">🔊</div>
+        <div class="small-btn" onclick="toggleVideo('vid3','GDe2DBYEX3I', this)">▶</div>
         <div class="small-btn" onclick="goFullscreenIframe('vid3')">⛶</div>
       </div>
     </div>
 
     <div class="video-card">
       <iframe id="vid4" src="https://www.youtube.com/embed/obkKy8FeJ6Y?mute=1"></iframe>
-      <div class="video-title">פיגי רובוט</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid4','obkKy8FeJ6Y')">🔊</div>
+        <div class="small-btn" onclick="toggleVideo('vid4','obkKy8FeJ6Y', this)">▶</div>
         <div class="small-btn" onclick="goFullscreenIframe('vid4')">⛶</div>
       </div>
     </div>
@@ -195,34 +142,45 @@ body {
 </div>
 
 <script>
-function stopOtherVideos(currentId) {
-  const iframes = document.querySelectorAll('iframe');
+let currentPlaying = null;
 
-  iframes.forEach((iframe) => {
-    if (iframe.id !== currentId) {
-      iframe.src = iframe.src;
-    }
+function stopAll() {
+  document.querySelectorAll('iframe').forEach(f => f.src = f.src);
+}
+
+function resetButtons() {
+  document.querySelectorAll('.small-btn, .btn').forEach(btn => {
+    if (btn.innerText.includes('⛶')) return;
+    btn.innerText = btn.innerText.includes('הפעל') ? '▶ הפעל' : '▶';
   });
 }
 
-function enableSound() {
-  stopOtherVideos('mainVideo');
-  document.getElementById('mainVideo').src =
-    "https://www.youtube.com/embed/BEpLqsbAnEM?autoplay=1&mute=0";
-}
+function toggleVideo(id, videoId, btn) {
+  if (currentPlaying === id) {
+    stopAll();
+    currentPlaying = null;
+    btn.innerText = btn.innerText.includes('הפעל') ? '▶ הפעל' : '▶';
+    return;
+  }
 
-function unmute(id, videoId) {
-  stopOtherVideos(id);
+  stopAll();
+  resetButtons();
+
   document.getElementById(id).src =
     `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
+
+  currentPlaying = id;
+
+  if (btn.innerText.includes('הפעל')) {
+    btn.innerText = '⏸ הפסק';
+  } else {
+    btn.innerText = '⏸';
+  }
 }
 
 function goFullscreenIframe(id) {
   const iframe = document.getElementById(id);
-
   if (iframe.requestFullscreen) iframe.requestFullscreen();
-  else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
-  else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
 }
 </script>
 
