@@ -17,6 +17,7 @@ body {
   position: relative;
   height: 70vh;
   min-height: 500px;
+  overflow: hidden;
 }
 
 .hero iframe {
@@ -37,21 +38,38 @@ body {
   bottom: 40px;
   right: 40px;
   z-index: 2;
+  max-width: 500px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
 .btn {
   margin-top: 10px;
+  display: inline-block;
   padding: 10px 16px;
   border-radius: 8px;
   background: #ff2d55;
+  font-weight: bold;
   cursor: pointer;
-  display: inline-block;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 
 .section {
   padding: 40px 20px;
   text-align: center;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .videos {
@@ -66,35 +84,57 @@ body {
   background: rgba(0,0,0,0.3);
   border-radius: 12px;
   overflow: hidden;
+  transition: 0.3s;
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
 }
 
 .video-card iframe {
   width: 100%;
   height: 180px;
+  border: none;
+}
+
+.video-title {
+  padding: 10px;
+  font-weight: bold;
 }
 
 .video-actions {
-  padding: 10px;
+  padding: 8px;
 }
 
 .small-btn {
   padding: 6px 10px;
-  border-radius: 6px;
   background: #2d7dff;
+  border-radius: 6px;
   cursor: pointer;
   display: inline-block;
   margin: 4px;
 }
 
 @media (max-width: 600px) {
-  .hero { height: 50vh; min-height: 300px; }
+  .hero {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .hero-content {
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <div class="hero" id="hero">
   <iframe id="mainVideo"
     src="https://www.youtube.com/embed/BEpLqsbAnEM?autoplay=1&mute=1"
@@ -103,38 +143,51 @@ body {
   </iframe>
 
   <div class="hero-content">
-    <div class="btn" onclick="unmuteMain()">🔊 הפעל קול</div>
-    <div class="btn" onclick="fullscreen('hero')">⛶ מסך מלא</div>
+    <h1>הרפתקה מתחילה כאן</h1>
+    <p>צפו בסרטון המרכזי והצטרפו לעולם של גיבורים צבעוניים</p>
+    <div class="btn" onclick="enableSound()">🔊 הפעל קול</div>
+    <div class="btn" onclick="goFullscreen('hero')">⛶ מסך מלא</div>
   </div>
 </div>
 
-<!-- VIDEOS -->
 <div class="section">
   <h2>🎬 סרטונים נוספים</h2>
 
   <div class="videos">
 
     <div class="video-card" id="v1">
-      <iframe id="vid1" src="https://www.youtube.com/embed/ysz5S6PUM-U?mute=1"></iframe>
+      <iframe id="vid1" src="https://www.youtube.com/embed/YhYBe4WMEMU?mute=1"></iframe>
+      <div class="video-title">ילד חתול</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid1','ysz5S6PUM-U')">🔊 קול</div>
-        <div class="small-btn" onclick="fullscreen('v1')">⛶ מסך מלא</div>
+        <div class="small-btn" onclick="unmute('vid1','YhYBe4WMEMU')">🔊</div>
+        <div class="small-btn" onclick="goFullscreen('v1')">⛶</div>
       </div>
     </div>
 
     <div class="video-card" id="v2">
-      <iframe id="vid2" src="https://www.youtube.com/embed/TcMBFSGVi1c?mute=1"></iframe>
+      <iframe id="vid2" src="https://www.youtube.com/embed/b4W6Tgjha8Q?mute=1"></iframe>
+      <div class="video-title">גיאקו</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid2','TcMBFSGVi1c')">🔊 קול</div>
-        <div class="small-btn" onclick="fullscreen('v2')">⛶ מסך מלא</div>
+        <div class="small-btn" onclick="unmute('vid2','b4W6Tgjha8Q')">🔊</div>
+        <div class="small-btn" onclick="goFullscreen('v2')">⛶</div>
       </div>
     </div>
 
     <div class="video-card" id="v3">
-      <iframe id="vid3" src="https://www.youtube.com/embed/aqz-KE-bpKQ?mute=1"></iframe>
+      <iframe id="vid3" src="https://www.youtube.com/embed/GDe2DBYEX3I?mute=1"></iframe>
+      <div class="video-title">ינשופונת</div>
       <div class="video-actions">
-        <div class="small-btn" onclick="unmute('vid3','aqz-KE-bpKQ')">🔊 קול</div>
-        <div class="small-btn" onclick="fullscreen('v3')">⛶ מסך מלא</div>
+        <div class="small-btn" onclick="unmute('vid3','GDe2DBYEX3I')">🔊</div>
+        <div class="small-btn" onclick="goFullscreen('v3')">⛶</div>
+      </div>
+    </div>
+
+    <div class="video-card" id="v4">
+      <iframe id="vid4" src="https://www.youtube.com/embed/obkKy8FeJ6Y?mute=1"></iframe>
+      <div class="video-title">פיגי רובוט</div>
+      <div class="video-actions">
+        <div class="small-btn" onclick="unmute('vid4','obkKy8FeJ6Y')">🔊</div>
+        <div class="small-btn" onclick="goFullscreen('v4')">⛶</div>
       </div>
     </div>
 
@@ -142,20 +195,17 @@ body {
 </div>
 
 <script>
-function unmuteMain() {
-  const iframe = document.getElementById('mainVideo');
-  iframe.src = "https://www.youtube.com/embed/BEpLqsbAnEM?autoplay=1&mute=0";
+function enableSound() {
+  document.getElementById('mainVideo').src = "https://www.youtube.com/embed/BEpLqsbAnEM?autoplay=1&mute=0";
 }
 
 function unmute(id, videoId) {
   document.getElementById(id).src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
 }
 
-function fullscreen(id) {
+function goFullscreen(id) {
   const el = document.getElementById(id);
   if (el.requestFullscreen) el.requestFullscreen();
-  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-  else if (el.msRequestFullscreen) el.msRequestFullscreen();
 }
 </script>
 
