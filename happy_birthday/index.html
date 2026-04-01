@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>יום הולדת שמח</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg,#fff4f8,#ffe9f3,#fff7d6);
+      color: #5a2458;
+    }
+
+    header {
+      padding: 30px 15px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: clamp(2rem,5vw,3.5rem);
+      color: #d63384;
+      margin-bottom: 20px;
+    }
+
+    /* Layout */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+      align-items: center;
+    }
+
+    /* Cake */
+    .cake {
+      position: relative;
+      width: 220px;
+      height: 260px;
+      margin: auto;
+    }
+
+    .tier {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 20px;
+    }
+
+    .tier1 { bottom: 0; width: 220px; height: 80px; background:#ff8fc1; }
+    .tier2 { bottom: 70px; width: 160px; height: 70px; background:#ffc75f; }
+    .tier3 { bottom: 130px; width: 110px; height: 60px; background:#ffb3d9; }
+
+    .candles {
+      position:absolute;
+      top:30px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:10px;
+    }
+
+    .candle {
+      width:10px;
+      height:40px;
+      background:#fff;
+      position:relative;
+    }
+
+    .flame {
+      position:absolute;
+      top:-15px;
+      left:50%;
+      transform:translateX(-50%);
+      width:10px;
+      height:15px;
+      background:orange;
+      border-radius:50%;
+      animation:flicker 1s infinite;
+    }
+
+    @keyframes flicker {
+      0%,100%{transform:translateX(-50%) scale(1);} 
+      50%{transform:translateX(-50%) scale(1.2);} 
+    }
+
+    /* Videos */
+    .videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 15px;
+    }
+
+    .video-frame {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #eee;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Responsive */
+    @media(max-width:900px){
+      .main-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:500px){
+      .videos{
+        grid-template-columns:1fr;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>יום הולדת שמח</h1>
+</header>
+
+<div class="main-layout">
+
+  <!-- Cake -->
+  <div>
+    <div class="cake">
+      <div class="candles">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+      <div class="tier tier3"></div>
+      <div class="tier tier2"></div>
+      <div class="tier tier1"></div>
+    </div>
+  </div>
+
+  <!-- Videos -->
+  <div class="videos">
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/jCxgUPFVFkA" allowfullscreen></iframe>
+    </div>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
+    </div>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
+    </div>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/kffacxfA7G4" allowfullscreen></iframe>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
