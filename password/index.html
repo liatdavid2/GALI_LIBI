@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>האתר של גלי</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="login-screen" class="screen">
+    <div class="card">
+      <h1>ברוכים הבאים</h1>
+      <p>כדי להיכנס לאתר, הכניסו סיסמה</p>
+
+      <input
+        type="text"
+        id="passwordInput"
+        placeholder="הכניסי סיסמה"
+        autocomplete="off"
+      />
+
+      <button id="loginBtn">כניסה</button>
+      <p id="errorMsg" class="error"></p>
+    </div>
+  </div>
+
+  <div id="site-content" class="screen hidden">
+    <header class="hero">
+      <h1>היי גלי</h1>
+      <p>הצלחת להיכנס לאתר</p>
+      <button id="logoutBtn" class="secondary-btn">התנתקות</button>
+    </header>
+
+    <main class="content">
+      <section class="box">
+        <h2>עמוד פרטי</h2>
+        <p>
+          כאן אפשר לשים תמונות, סרטונים, ברכה ליום הולדת, משחק קטן או כל תוכן אחר.
+        </p>
+      </section>
+
+      <section class="box">
+        <h2>דוגמה לתוכן</h2>
+        <p>
+          אפשר לערוך את הטקסט הזה ולבנות מזה אתר אישי חמוד ל־GitHub Pages.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
