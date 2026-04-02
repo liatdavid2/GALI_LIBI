@@ -1,4 +1,4 @@
-const correctPassword = "גלי123*";
+const correctPassword = "גלי123";
 
 const loginScreen = document.getElementById("login-screen");
 const siteContent = document.getElementById("site-content");
