@@ -62,3 +62,9 @@ function restartGame() {
   endScreen.classList.add("hidden");
   startScreen.classList.remove("hidden");
 }
+
+
+// התחלה אוטומטית
+startScreen.classList.add("hidden");
+gameScreen.classList.remove("hidden");
+startGame();
