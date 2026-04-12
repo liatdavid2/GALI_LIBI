@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Save the Stars</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url("Images/Mystery_Mountain_BG.webp") no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  overflow: hidden;
+    }
+
+    #game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sky-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 20%),
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,0.08), transparent 18%),
+        radial-gradient(circle at 50% 10%, rgba(255,255,180,0.08), transparent 25%);
+      pointer-events: none;
+    }
+
+    .city {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 34%;
+      background: linear-gradient(180deg, #1f2937, #111827);
+    }
+
+    .building {
+      position: absolute;
+      bottom: 0;
+      background: #0b1220;
+      border-top: 3px solid rgba(255,255,255,0.06);
+    }
+
+    .window {
+      position: absolute;
+      width: 12px;
+      height: 16px;
+      background: #facc15;
+      border-radius: 2px;
+      opacity: 0.9;
+    }
+
+    .platform {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, 900px);
+      height: 18px;
+      background: #374151;
+      border-radius: 999px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+
+    .topbar {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      z-index: 30;
+      font-size: 18px;
+      font-weight: bold;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: rgba(0,0,0,0.3);
+      border: 2px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      padding: 10px 14px;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    #player {
+      position: absolute;
+      bottom: 138px;
+      left: calc(50% - 36px);
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8);
+      border: 4px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      z-index: 15;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      transition: left 0.06s linear;
+      user-select: none;
+    }
+
+    .item {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      z-index: 12;
+      user-select: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.28);
+    }
+
+    .star {
+      background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b);
+      border: 3px solid #fff7cc;
+    }
+
+    .ninja {
+      background: radial-gradient(circle at 30% 30%, #9ca3af, #111827);
+      border: 3px solid #e5e7eb;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 10, 20, 0.76);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 40;
+    }
+
+    .panel {
+      width: min(92vw, 680px);
+      background: linear-gradient(180deg, #1e3a8a, #0f172a);
+      border: 3px solid rgba(255,255,255,0.14);
+      border-radius: 24px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.45);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 48px);
+    }
+
+    p, li {
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    ul {
+      text-align: left;
+      max-width: 520px;
+      margin: 14px auto;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 28px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #111827;
+      background: linear-gradient(180deg, #fcd34d, #f59e0b);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      margin-top: 10px;
+    }
+
+    #controls {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 16px;
+      z-index: 35;
+      display: none;
+      gap: 14px;
+    }
+
+    .control-btn {
+      width: 92px;
+      height: 70px;
+      border-radius: 18px;
+      font-size: 34px;
+      color: white;
+      background: rgba(255,255,255,0.14);
+      border: 2px solid rgba(255,255,255,0.18);
+    }
+
+    .goal {
+      position: absolute;
+      right: 28px;
+      top: 80px;
+      z-index: 20;
+      padding: 10px 14px;
+      border-radius: 18px;
+      background: rgba(250, 204, 21, 0.16);
+      border: 2px solid rgba(255,255,255,0.14);
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      #controls {
+        display: flex;
+      }
+
+      .topbar {
+        font-size: 16px;
+      }
+
+      .pill {
+        min-width: 88px;
+        padding: 8px 12px;
+      }
+
+      #player {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+      }
+
+      .item {
+        width: 46px;
+        height: 46px;
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div class="sky-glow"></div>
+
+    <div class="topbar">
+      <div class="pill">Stars: <span id="score">0</span></div>
+      <div class="pill">Lives: <span id="lives">3</span></div>
+      <div class="pill">Level: <span id="level">1</span></div>
+    </div>
+
+    <div class="goal">Night Ninja hid the stars in his city</div>
+
+    <div class="platform"></div>
+    <div id="player">H</div>
+
+    <div id="controls">
+      <button class="control-btn" id="leftBtn">◀</button>
+      <button class="control-btn" id="rightBtn">▶</button>
+    </div>
+
+    <div class="overlay" id="startScreen">
+      <div class="panel">
+        <h1>Save the Stars</h1>
+        <p>Night Ninja took the shining stars and hid them in his city.</p>
+        <p>Run across the rooftops, collect the stars, and bring the light back to the night.</p>
+        <ul>
+          <li>Move left and right</li>
+          <li>Catch the falling stars</li>
+          <li>Avoid Night Ninja traps</li>
+          <li>Save 15 stars to win</li>
+        </ul>
+        <p>Keyboard: Left and Right arrows</p>
+        <button id="startBtn">Start Game</button>
+      </div>
+    </div>
+
+    <div class="overlay" id="endScreen" style="display:none;">
+      <div class="panel">
+        <h1 id="endTitle"></h1>
+        <p id="endText"></p>
+        <button id="restartBtn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const game = document.getElementById('game');
+    const city = document.getElementById('city');
+    const player = document.getElementById('player');
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+    const levelEl = document.getElementById('level');
+    const startScreen = document.getElementById('startScreen');
+    const endScreen = document.getElementById('endScreen');
+    const endTitle = document.getElementById('endTitle');
+    const endText = document.getElementById('endText');
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const leftBtn = document.getElementById('leftBtn');
+    const rightBtn = document.getElementById('rightBtn');
+
+    let score = 0;
+    let lives = 3;
+    let level = 1;
+    let playerX = window.innerWidth / 2 - 36;
+    let items = [];
+    let running = false;
+    let gameLoop = null;
+    let spawnLoop = null;
+
+    const playerSpeed = 30;
+    const winScore = 15;
+
+    function buildCity() {
+      city.innerHTML = '';
+      const buildingCount = Math.max(8, Math.floor(window.innerWidth / 90));
+      const buildingWidth = Math.ceil(window.innerWidth / buildingCount);
+
+      for (let i = 0; i < buildingCount; i++) {
+        const building = document.createElement('div');
+        building.className = 'building';
+        const height = 90 + Math.random() * 150;
+        building.style.left = `${i * buildingWidth}px`;
+        building.style.width = `${buildingWidth - 2}px`;
+        building.style.height = `${height}px`;
+
+        const cols = Math.max(2, Math.floor(buildingWidth / 18));
+        const rows = Math.max(3, Math.floor((height - 20) / 24));
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (Math.random() < 0.55) {
+              const w = document.createElement('div');
+              w.className = 'window';
+              w.style.left = `${8 + c * 18}px`;
+              w.style.top = `${10 + r * 22}px`;
+              building.appendChild(w);
+            }
+          }
+        }
+
+        city.appendChild(building);
+      }
+    }
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function updateHUD() {
+      scoreEl.textContent = score;
+      livesEl.textContent = lives;
+      levelEl.textContent = level;
+    }
+
+    function placePlayer() {
+      player.style.left = `${playerX}px`;
+    }
+
+    function moveLeft() {
+      playerX = clamp(playerX - playerSpeed, 12, window.innerWidth - 84);
+      placePlayer();
+    }
+
+    function moveRight() {
+      playerX = clamp(playerX + playerSpeed, 12, window.innerWidth - 84);
+      placePlayer();
+    }
+
+    function createItem(type) {
+      const el = document.createElement('div');
+      el.className = `item ${type}`;
+      el.textContent = type === 'star' ? '★' : 'N';
+
+      const x = 20 + Math.random() * (window.innerWidth - 80);
+      const speed = 2.7 + Math.random() * 1.3 + (level - 1) * 0.4;
+      el.style.left = `${x}px`;
+      el.style.top = '-60px';
+      game.appendChild(el);
+
+      items.push({ el, type, x, y: -60, speed });
+    }
+
+    function spawnItem() {
+      const isStar = Math.random() < 0.75;
+      createItem(isStar ? 'star' : 'ninja');
+    }
+
+    function rectsOverlap(a, b) {
+      return !(
+        a.right < b.left ||
+        a.left > b.right ||
+        a.bottom < b.top ||
+        a.top > b.bottom
+      );
+    }
+
+    function checkCollisions() {
+      const playerRect = player.getBoundingClientRect();
+
+      items = items.filter(item => {
+        const rect = item.el.getBoundingClientRect();
+        const hit = rectsOverlap(playerRect, rect);
+
+        if (hit) {
+          item.el.remove();
+          if (item.type === 'star') {
+            score += 1;
+            if (score % 5 === 0) level += 1;
+          } else {
+            lives -= 1;
+          }
+          updateHUD();
+          checkGameState();
+          return false;
+        }
+
+        if (item.y > window.innerHeight + 70) {
+          item.el.remove();
+          return false;
+        }
+
+        return true;
+      });
+    }
+
+    function updateItems() {
+      items.forEach(item => {
+        item.y += item.speed;
+        item.el.style.top = `${item.y}px`;
+      });
+    }
+
+    function tick() {
+      if (!running) return;
+      updateItems();
+      checkCollisions();
+      gameLoop = requestAnimationFrame(tick);
+    }
+
+    function clearItems() {
+      items.forEach(item => item.el.remove());
+      items = [];
+    }
+
+    function stopGame() {
+      running = false;
+      if (gameLoop) cancelAnimationFrame(gameLoop);
+      if (spawnLoop) clearInterval(spawnLoop);
+    }
+
+    function checkGameState() {
+      if (lives <= 0) {
+        stopGame();
+        endTitle.textContent = 'Night Ninja Won';
+        endText.textContent = `You saved ${score} stars. Try again and bring the light back.`;
+        endScreen.style.display = 'flex';
+      } else if (score >= winScore) {
+        stopGame();
+        endTitle.textContent = 'You Saved The Stars';
+        endText.textContent = `Great job. You rescued ${score} stars from Night Ninja's city.`;
+        endScreen.style.display = 'flex';
+      }
+    }
+
+    function startGame() {
+      score = 0;
+      lives = 3;
+      level = 1;
+      playerX = window.innerWidth / 2 - 36;
+      clearItems();
+      updateHUD();
+      placePlayer();
+      startScreen.style.display = 'none';
+      endScreen.style.display = 'none';
+      running = true;
+      spawnLoop = setInterval(spawnItem, 900);
+      tick();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!running) return;
+      if (e.key === 'ArrowLeft') moveLeft();
+      if (e.key === 'ArrowRight') moveRight();
+    });
+
+    function setupHoldButton(button, action) {
+      let interval = null;
+      const start = (e) => {
+        e.preventDefault();
+        action();
+        interval = setInterval(action, 80);
+      };
+      const stop = () => {
+        if (interval) clearInterval(interval);
+      };
+      button.addEventListener('touchstart', start, { passive: false });
+      button.addEventListener('touchend', stop);
+      button.addEventListener('mousedown', start);
+      button.addEventListener('mouseup', stop);
+      button.addEventListener('mouseleave', stop);
+    }
+
+    setupHoldButton(leftBtn, moveLeft);
+    setupHoldButton(rightBtn, moveRight);
+
+    startBtn.addEventListener('click', startGame);
+    restartBtn.addEventListener('click', startGame);
+
+    window.addEventListener('resize', () => {
+      buildCity();
+      playerX = clamp(playerX, 12, window.innerWidth - 84);
+      placePlayer();
+    });
+
+    buildCity();
+    updateHUD();
+    placePlayer();
+  </script>
+</body>
+</html>
