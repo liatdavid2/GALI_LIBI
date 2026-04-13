@@ -1,0 +1,113 @@
+body {
+  background-color: #ffe6f0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  user-select: none;
+}
+
+h1 {
+  color: #d6336c;
+  margin-bottom: 10px;
+}
+
+#game-container {
+  position: relative;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, #ffc0cb, #ffb6c1);
+  width: 400px;
+  height: 300px;
+  border: 3px solid #d6336c;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#fairy {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at center, #ffb6c1, #d6336c);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 0 15px 3px #ff66b2;
+  bottom: 10px;
+  left: 180px;
+  transition: left 0.1s;
+}
+
+#fairy::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  background: #fff0f6;
+  border-radius: 50%;
+  box-shadow: 12px 0 #fff0f6;
+}
+
+#star {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: gold;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  top: 20px;
+  left: 50px;
+  filter: drop-shadow(0 0 3px #b8860b);
+}
+
+#cloud {
+  position: absolute;
+  width: 60px;
+  height: 40px;
+  background: #f8f0f8;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  top: 50px;
+  left: 300px;
+  box-shadow:
+    20px 10px 0 0 #f8f0f8,
+    40px 10px 0 0 #f8f0f8,
+    10px 20px 0 0 #f8f0f8,
+    30px 20px 0 0 #f8f0f8;
+  filter: drop-shadow(0 0 3px #c0a0c0);
+}
+
+#info {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #d6336c;
+}
+
+#message {
+  margin: 10px 0;
+  font-weight: bold;
+  min-height: 24px;
+}
+
+#start-button {
+  background-color: #d6336c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#start-button:hover {
+  background-color: #a02a54;
+}
