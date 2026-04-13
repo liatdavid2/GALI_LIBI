@@ -25,21 +25,21 @@ let starSpeed = 3; // increased initial star speed
 let isGameRunning = false;
 
 // Positions
-let fairyX = 180; // initial horizontal position
+let fairyY = gameHeight - fairyHeight - 10; // initial vertical position
 let starX = 50;
 let starY = 20;
 let cloudX = 300;
 let cloudY = 50;
 
-// Move fairy left or right within boundaries
+// Move fairy up or down within boundaries
 function moveFairy(direction) {
   if (!isGameRunning) return;
-  if (direction === 'left') {
-    fairyX = Math.max(0, fairyX - 20);
-  } else if (direction === 'right') {
-    fairyX = Math.min(gameWidth - fairyWidth, fairyX + 20);
+  if (direction === 'up') {
+    fairyY = Math.max(0, fairyY - 20);
+  } else if (direction === 'down') {
+    fairyY = Math.min(gameHeight - fairyHeight, fairyY + 20);
   }
-  fairy.style.left = fairyX + 'px';
+  fairy.style.top = fairyY + 'px';
 }
 
 // Random position helper
@@ -50,18 +50,18 @@ function randomPosition(maxX, maxY) {
   };
 }
 
-// Reset star to a random top position and left at right edge
+// Reset star to a random vertical position and fixed horizontal position
 function resetStar() {
-  starX = gameWidth;
-  starY = Math.floor(Math.random() * (gameHeight - starSize));
+  starX = Math.floor(Math.random() * (gameWidth - starSize));
+  starY = 0;
   star.style.left = starX + 'px';
   star.style.top = starY + 'px';
 }
 
-// Reset cloud to a random top position and left at right edge
+// Reset cloud to a random vertical position and fixed horizontal position
 function resetCloud() {
-  cloudX = gameWidth;
-  cloudY = Math.floor(Math.random() * (gameHeight - cloudHeight));
+  cloudX = Math.floor(Math.random() * (gameWidth - cloudWidth));
+  cloudY = 0;
   cloud.style.left = cloudX + 'px';
   cloud.style.top = cloudY + 'px';
 }
@@ -78,23 +78,23 @@ function isColliding(rect1, rect2) {
 
 // Update game frame
 function updateGame() {
-  // Move star left
-  starX -= starSpeed;
-  if (starX + starSize < 0) {
+  // Move star down
+  starY += starSpeed;
+  if (starY > gameHeight) {
     resetStar();
   }
-  star.style.left = starX + 'px';
+  star.style.top = starY + 'px';
 
-  // Move cloud left
-  cloudX -= cloudSpeed;
-  if (cloudX + cloudWidth < 0) {
+  // Move cloud down
+  cloudY += cloudSpeed;
+  if (cloudY > gameHeight) {
     resetCloud();
   }
-  cloud.style.left = cloudX + 'px';
   cloud.style.top = cloudY + 'px';
+  cloud.style.left = cloudX + 'px';
 
   // Fairy rectangle
-  const fairyRect = { x: fairyX, y: gameHeight - fairyHeight - 10, width: fairyWidth, height: fairyHeight };
+  const fairyRect = { x: 180, y: fairyY, width: fairyWidth, height: fairyHeight };
 
   // Star rectangle
   const starRect = { x: starX, y: starY, width: starSize, height: starSize };
@@ -140,8 +140,9 @@ function startGame() {
   isGameRunning = true;
   cloudSpeed = 2;
   starSpeed = 3; // faster initial speed
-  fairyX = 180;
-  fairy.style.left = fairyX + 'px';
+  fairyY = gameHeight - fairyHeight - 10;
+  fairy.style.top = fairyY + 'px';
+  fairy.style.left = '180px';
   resetStar();
   resetCloud();
   startButton.disabled = true;
@@ -169,10 +170,10 @@ function endGame(won) {
 // Keyboard controls for fairy
 window.addEventListener('keydown', (e) => {
   if (!isGameRunning) return;
-  if (e.key === 'ArrowLeft' || e.key === 'a') {
-    moveFairy('left');
-  } else if (e.key === 'ArrowRight' || e.key === 'd') {
-    moveFairy('right');
+  if (e.key === 'ArrowUp' || e.key === 'w') {
+    moveFairy('up');
+  } else if (e.key === 'ArrowDown' || e.key === 's') {
+    moveFairy('down');
   }
 });
 
@@ -182,5 +183,5 @@ startButton.addEventListener('click', () => {
 });
 
 // Initialize fairy position
-fairy.style.left = fairyX + 'px';
-fairy.style.bottom = '10px';
+fairy.style.left = '180px';
+fairy.style.top = fairyY + 'px';

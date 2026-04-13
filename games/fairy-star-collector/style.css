@@ -30,9 +30,8 @@ h1 {
   background: radial-gradient(circle at center, #ffb6c1, #d6336c);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   box-shadow: 0 0 15px 3px #ff66b2;
-  bottom: 10px;
   left: 180px;
-  transition: left 0.1s;
+  transition: top 0.1s;
 }
 
 #fairy::before {
