@@ -92,7 +92,7 @@ function updateGame() {
   if (isColliding(playerRect, bubbleRect)) {
     score += 1;
     scoreSpan.textContent = score;
-    messageDiv.textContent = 'Great catch! 389';
+    messageDiv.textContent = 'Great catch!';
     resetBubble();
     // Increase speed every 3 points
     if (score % 3 === 0) {
@@ -128,7 +128,7 @@ function endGame(won) {
   isGameRunning = false;
   clearInterval(gameInterval);
   if (won) {
-    messageDiv.textContent = 'You won! You caught 15 star bubbles! 38A';
+    messageDiv.textContent = 'You won! You caught 15 star bubbles!';
   } else {
     messageDiv.textContent = 'Game over!';
   }

@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(135deg, #ffccdd 0%, #ff99cc 100%);
+  background: #ffc0cb; /* solid pink background */
   font-family: 'Comic Sans MS', cursive, sans-serif;
   text-align: center;
   margin: 0;
@@ -27,7 +27,7 @@ h1 {
   box-shadow: 0 0 20px 5px #ff99cc;
 }
 
-/* Player is a pink fairy with subtle wings and glow */
+/* Player is a fairy inside a bubble */
 #player {
   position: absolute;
   width: 50px;
@@ -38,10 +38,27 @@ h1 {
   bottom: 10px;
   left: 175px;
   transition: left 0.1s;
+  z-index: 2;
 }
 
-/* Add simple wings using before and after pseudo elements */
-#player::before, #player::after {
+/* Bubble around the fairy player */
+#player::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 80%);
+  box-shadow: 0 0 15px 6px rgba(255, 182, 217, 0.7);
+  filter: drop-shadow(0 0 5px #ff99cc);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Wings for the fairy using after pseudo element */
+#player::after {
   content: '';
   position: absolute;
   top: 10px;
@@ -51,16 +68,9 @@ h1 {
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   opacity: 0.7;
   filter: drop-shadow(0 0 3px #ff99cc);
-}
-
-#player::before {
   left: -15px;
   transform: rotate(-20deg);
-}
-
-#player::after {
-  right: -15px;
-  transform: rotate(20deg);
+  pointer-events: none;
 }
 
 /* Bubble is a glowing star bubble with sparkle effect */
@@ -74,6 +84,7 @@ h1 {
   top: 0;
   left: 100px;
   filter: drop-shadow(0 0 3px #ff66b2);
+  z-index: 1;
 }
 
 /* Add star sparkle inside bubble using before pseudo element */
