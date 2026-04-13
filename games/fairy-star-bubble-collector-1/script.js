@@ -26,7 +26,8 @@ let missed = 0;
 let gameActive = false;
 let gameOver = false;
 let winScore = 10;
-let maxMissed = 3;
+// User request: allow missing many stars and bubbles, do not count missed
+let maxMissed = 999999; // Effectively disables losing by missing
 let animationId;
 
 function drawFairy() {
@@ -145,9 +146,9 @@ function checkCollisions() {
       stars.splice(i,1);
       continue;
     }
-    // Missed star
+    // Missed star: do not count missed anymore
     if (s.y - s.radius > GAME_HEIGHT) {
-      missed++;
+      // Do not increment missed
       stars.splice(i,1);
     }
   }
@@ -159,9 +160,9 @@ function checkCollisions() {
       bubbles.splice(i,1);
       continue;
     }
-    // Missed bubble
+    // Missed bubble: do not count missed anymore
     if (b.y - b.radius > GAME_HEIGHT) {
-      missed++;
+      // Do not increment missed
       bubbles.splice(i,1);
     }
   }
@@ -214,7 +215,7 @@ function gameLoop() {
     endGame(true);
     return;
   }
-  // Lose condition: missed too many
+  // Lose condition: missed too many (never happens now)
   if (missed >= maxMissed) {
     endGame(false);
     return;
