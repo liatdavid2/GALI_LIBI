@@ -1,5 +1,5 @@
 // Fairy Star Collector Game
-// The fairy collects stars and avoids bubbles
+// The fairy collects stars, flowers, and rainbows and avoids bubbles
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -20,6 +20,8 @@ let fairy = {
 
 let stars = [];
 let bubbles = [];
+let flowers = [];
+let rainbows = [];
 
 let score = 0;
 let gameRunning = false;
@@ -111,6 +113,47 @@ function drawBubble(bubble) {
     ctx.stroke();
 }
 
+// Draw flower as a small pink flower shape
+function drawFlower(flower) {
+    const cx = flower.x;
+    const cy = flower.y;
+    const petalRadius = 6;
+    const centerRadius = 4;
+
+    ctx.fillStyle = '#ff99cc';
+    for (let i = 0; i < 5; i++) {
+        const angle = (i * (2 * Math.PI)) / 5;
+        const px = cx + Math.cos(angle) * petalRadius * 2;
+        const py = cy + Math.sin(angle) * petalRadius * 2;
+        ctx.beginPath();
+        ctx.ellipse(px, py, petalRadius, petalRadius * 1.5, angle, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Center
+    ctx.fillStyle = '#ff66b3';
+    ctx.beginPath();
+    ctx.arc(cx, cy, centerRadius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+// Draw rainbow as a small colorful arc
+function drawRainbow(rainbow) {
+    const cx = rainbow.x;
+    const cy = rainbow.y;
+    const radius = 20;
+    const thickness = 5;
+    const colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#8b00ff'];
+
+    for (let i = 0; i < colors.length; i++) {
+        ctx.beginPath();
+        ctx.strokeStyle = colors[i];
+        ctx.lineWidth = thickness;
+        ctx.arc(cx, cy, radius - i * thickness, Math.PI, 2 * Math.PI, false);
+        ctx.stroke();
+    }
+}
+
 // Clear canvas
 function clear() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -148,10 +191,52 @@ function update() {
         }
     }
 
+    // Move flowers down
+    for (let i = flowers.length - 1; i >= 0; i--) {
+        flowers[i].y += flowers[i].speed;
+        if (flowers[i].y - flowers[i].radius > HEIGHT) {
+            flowers.splice(i, 1);
+        }
+    }
+
+    // Move rainbows down
+    for (let i = rainbows.length - 1; i >= 0; i--) {
+        rainbows[i].y += rainbows[i].speed;
+        if (rainbows[i].y - rainbows[i].radius > HEIGHT) {
+            rainbows.splice(i, 1);
+        }
+    }
+
     // Check collisions with stars
     for (let i = stars.length - 1; i >= 0; i--) {
         if (circleCollision(fairy, stars[i])) {
             stars.splice(i, 1);
+            score += 1;
+            scoreElem.textContent = score;
+            if (score >= 10) {
+                endGame(true);
+                return;
+            }
+        }
+    }
+
+    // Check collisions with flowers
+    for (let i = flowers.length - 1; i >= 0; i--) {
+        if (circleCollision(fairy, flowers[i])) {
+            flowers.splice(i, 1);
+            score += 1;
+            scoreElem.textContent = score;
+            if (score >= 10) {
+                endGame(true);
+                return;
+            }
+        }
+    }
+
+    // Check collisions with rainbows
+    for (let i = rainbows.length - 1; i >= 0; i--) {
+        if (circleCollision(fairy, rainbows[i])) {
+            rainbows.splice(i, 1);
             score += 1;
             scoreElem.textContent = score;
             if (score >= 10) {
@@ -169,7 +254,7 @@ function update() {
         }
     }
 
-    // Occasionally add new stars and bubbles
+    // Occasionally add new stars, bubbles, flowers, and rainbows
     if (Math.random() < 0.03) {
         stars.push({
             x: randInt(20, WIDTH - 20),
@@ -183,6 +268,22 @@ function update() {
             x: randInt(20, WIDTH - 20),
             y: -20,
             radius: randInt(15, 25),
+            speed: randInt(1, 3)
+        });
+    }
+    if (Math.random() < 0.02) {
+        flowers.push({
+            x: randInt(20, WIDTH - 20),
+            y: -20,
+            radius: 15,
+            speed: randInt(2, 4)
+        });
+    }
+    if (Math.random() < 0.01) {
+        rainbows.push({
+            x: randInt(30, WIDTH - 30),
+            y: -30,
+            radius: 20,
             speed: randInt(1, 3)
         });
     }
@@ -202,6 +303,8 @@ function draw() {
     drawFairy();
     stars.forEach(drawStar);
     bubbles.forEach(drawBubble);
+    flowers.forEach(drawFlower);
+    rainbows.forEach(drawRainbow);
 }
 
 // Game loop
@@ -221,6 +324,8 @@ function startGame() {
     fairy.x = WIDTH / 2;
     stars = [];
     bubbles = [];
+    flowers = [];
+    rainbows = [];
     gameRunning = true;
     startButton.disabled = true;
     gameLoop();
@@ -231,7 +336,7 @@ function endGame(won) {
     gameRunning = false;
     startButton.disabled = false;
     if (won) {
-        messageElem.textContent = 'You Win! The fairy collected 10 stars!';
+        messageElem.textContent = 'You Win! The fairy collected 10 items!';
     } else {
         messageElem.textContent = 'You Lose! The fairy touched a bubble!';
     }
