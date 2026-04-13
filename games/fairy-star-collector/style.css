@@ -1,5 +1,5 @@
 body {
-  background-color: #ffe6f0;
+  background-color: #330022;
   font-family: 'Comic Sans MS', cursive, sans-serif;
   text-align: center;
   margin: 0;
@@ -15,7 +15,7 @@ h1 {
 #game-container {
   position: relative;
   margin: 0 auto;
-  background: linear-gradient(to bottom, #ffc0cb, #ffb6c1);
+  background: linear-gradient(to bottom, #660033, #4b0026);
   width: 400px;
   height: 300px;
   border: 3px solid #d6336c;

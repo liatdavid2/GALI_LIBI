@@ -4,6 +4,7 @@ const fairy = document.getElementById('fairy');
 const star = document.getElementById('star');
 const cloud = document.getElementById('cloud');
 const scoreSpan = document.getElementById('score');
+const livesSpan = document.getElementById('lives');
 const messageDiv = document.getElementById('message');
 const startButton = document.getElementById('start-button');
 const gameContainer = document.getElementById('game-container');
@@ -17,9 +18,10 @@ const cloudWidth = 60;
 const cloudHeight = 40;
 
 let score = 0;
+let lives = 3;
 let gameInterval = null;
 let cloudSpeed = 2;
-let starSpeed = 1.5;
+let starSpeed = 3; // increased initial star speed
 let isGameRunning = false;
 
 // Positions
@@ -117,18 +119,27 @@ function updateGame() {
 
   // Check collision with cloud
   if (isColliding(fairyRect, cloudRect)) {
-    endGame(false);
+    lives -= 1;
+    livesSpan.textContent = lives;
+    if (lives <= 0) {
+      endGame(false);
+    } else {
+      messageDiv.textContent = `Ouch! The fairy hit a cloud! Lives left: ${lives}`;
+      resetCloud();
+    }
   }
 }
 
 // Start or restart the game
 function startGame() {
   score = 0;
+  lives = 3;
   scoreSpan.textContent = score;
+  livesSpan.textContent = lives;
   messageDiv.textContent = '';
   isGameRunning = true;
   cloudSpeed = 2;
-  starSpeed = 1.5;
+  starSpeed = 3; // faster initial speed
   fairyX = 180;
   fairy.style.left = fairyX + 'px';
   resetStar();
@@ -149,7 +160,7 @@ function endGame(won) {
   if (won) {
     messageDiv.textContent = 'You won! The fairy collected 10 stars! 🌟';
   } else {
-    messageDiv.textContent = 'Oh no! The fairy hit a cloud! Game over. ☁️';
+    messageDiv.textContent = 'Oh no! The fairy lost all lives! Game over. ☁️';
   }
   startButton.disabled = false;
   startButton.textContent = 'Restart Game';
