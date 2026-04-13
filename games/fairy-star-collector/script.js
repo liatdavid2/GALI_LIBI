@@ -1,4 +1,4 @@
-// Catch the Bubbles Game
+// Fairy Star Collector Game with bubbles and stars
 
 const player = document.getElementById('player');
 const bubble = document.getElementById('bubble');
@@ -23,6 +23,26 @@ let playerX = (gameWidth - playerWidth) / 2;
 // Bubble position
 let bubbleX = Math.floor(Math.random() * (gameWidth - bubbleSize));
 let bubbleY = 0;
+
+// Create background stars for twinkling effect
+const starCount = 20;
+const stars = [];
+
+function createStars() {
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    star.style.top = Math.random() * (gameHeight - 10) + 'px';
+    star.style.left = Math.random() * (gameWidth - 10) + 'px';
+    star.style.animationDelay = (Math.random() * 3) + 's';
+    star.style.fontSize = (8 + Math.random() * 8) + 'px';
+    star.textContent = '\u2729'; // sparkle star
+    gameContainer.appendChild(star);
+    stars.push(star);
+  }
+}
+
+createStars();
 
 // Move player left or right within boundaries
 function movePlayer(direction) {
@@ -72,7 +92,7 @@ function updateGame() {
   if (isColliding(playerRect, bubbleRect)) {
     score += 1;
     scoreSpan.textContent = score;
-    messageDiv.textContent = 'Great catch! 🎉';
+    messageDiv.textContent = 'Great catch! 389';
     resetBubble();
     // Increase speed every 3 points
     if (score % 3 === 0) {
@@ -108,7 +128,7 @@ function endGame(won) {
   isGameRunning = false;
   clearInterval(gameInterval);
   if (won) {
-    messageDiv.textContent = 'You won! You caught 15 bubbles! 🎊';
+    messageDiv.textContent = 'You won! You caught 15 star bubbles! 38A';
   } else {
     messageDiv.textContent = 'Game over!';
   }

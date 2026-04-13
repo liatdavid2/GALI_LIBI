@@ -1,66 +1,123 @@
 body {
-  background-color: #004466;
+  background: linear-gradient(135deg, #ffccdd 0%, #ff99cc 100%);
   font-family: 'Comic Sans MS', cursive, sans-serif;
   text-align: center;
   margin: 0;
   padding: 20px;
   user-select: none;
-  color: #ccf7ff;
+  color: #660033;
+  overflow-x: hidden;
 }
 
 h1 {
-  color: #66d9ff;
+  color: #ff66b2;
   margin-bottom: 15px;
+  text-shadow: 0 0 5px #ff99cc;
 }
 
 #game-container {
   position: relative;
   margin: 0 auto;
-  background: linear-gradient(to bottom, #003344, #001a22);
+  background: radial-gradient(circle at center, #ffb6d9, #ff66b2);
   width: 400px;
   height: 300px;
-  border: 3px solid #66d9ff;
+  border: 3px solid #ff66b2;
   border-radius: 15px;
   overflow: hidden;
+  box-shadow: 0 0 20px 5px #ff99cc;
 }
 
+/* Player is a pink fairy with subtle wings and glow */
 #player {
   position: absolute;
   width: 50px;
   height: 50px;
-  background: radial-gradient(circle at center, #99eeff, #3399cc);
+  background: radial-gradient(circle at center, #ff99cc 0%, #cc6699 70%);
   border-radius: 50%;
-  box-shadow: 0 0 15px 4px #66ccff;
+  box-shadow: 0 0 15px 6px #ff66b2;
   bottom: 10px;
   left: 175px;
   transition: left 0.1s;
 }
 
+/* Add simple wings using before and after pseudo elements */
+#player::before, #player::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  width: 20px;
+  height: 30px;
+  background: radial-gradient(circle at center, #ffe6f0, #ff99cc);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 3px #ff99cc);
+}
+
+#player::before {
+  left: -15px;
+  transform: rotate(-20deg);
+}
+
+#player::after {
+  right: -15px;
+  transform: rotate(20deg);
+}
+
+/* Bubble is a glowing star bubble with sparkle effect */
 #bubble {
   position: absolute;
   width: 30px;
   height: 30px;
-  background: radial-gradient(circle at center, #aaffff, #33cccc);
+  background: radial-gradient(circle at center, #fff1f8 40%, #ff66b2 90%);
   border-radius: 50%;
-  box-shadow: 0 0 10px 3px #66ffff;
+  box-shadow: 0 0 15px 5px #ff99cc;
   top: 0;
   left: 100px;
+  filter: drop-shadow(0 0 3px #ff66b2);
+}
+
+/* Add star sparkle inside bubble using before pseudo element */
+#bubble::before {
+  content: '\2605'; /* Unicode star */
+  position: absolute;
+  top: 3px;
+  left: 7px;
+  font-size: 16px;
+  color: #ff66b2;
+  text-shadow: 0 0 5px #ff99cc;
+}
+
+/* Add floating star sparkles in background */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.3; transform: scale(1.2) rotate(20deg); }
+}
+
+.star {
+  position: absolute;
+  color: #ff99cc;
+  font-size: 12px;
+  user-select: none;
+  animation: twinkle 3s infinite ease-in-out;
+  filter: drop-shadow(0 0 2px #ff66b2);
 }
 
 #info {
   margin-top: 15px;
   font-size: 18px;
-  color: #66d9ff;
+  color: #cc3366;
 }
 
 #message {
   margin: 10px 0;
   font-weight: bold;
   min-height: 24px;
+  color: #cc3366;
+  text-shadow: 0 0 5px #ff99cc;
 }
 
 #start-button {
-  background-color: #3399cc;
+  background-color: #ff66b2;
   color: white;
   border: none;
   padding: 10px 25px;
@@ -68,8 +125,9 @@ h1 {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: 0 0 10px #ff99cc;
 }
 
 #start-button:hover {
-  background-color: #267a99;
+  background-color: #cc3366;
 }
