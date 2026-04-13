@@ -1,144 +1,57 @@
+/* Simple pink themed game style */
 body {
-  background: #ffc0cb; /* solid pink background */
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 20px;
-  user-select: none;
-  color: #660033;
-  overflow-x: hidden;
+    background-color: #ffe6f0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    color: #b30059;
 }
 
 h1 {
-  color: #ff66b2;
-  margin-bottom: 15px;
-  text-shadow: 0 0 5px #ff99cc;
+    margin-bottom: 10px;
 }
 
 #game-container {
-  position: relative;
-  margin: 0 auto;
-  background: radial-gradient(circle at center, #ffb6d9, #ff66b2);
-  width: 400px;
-  height: 300px;
-  border: 3px solid #ff66b2;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 0 20px 5px #ff99cc;
+    display: inline-block;
+    background-color: #ffccdd;
+    border: 3px solid #b30059;
+    border-radius: 15px;
+    padding: 10px;
 }
 
-/* Player is a fairy inside a bubble */
-#player {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  background: radial-gradient(circle at center, #ff99cc 0%, #cc6699 70%);
-  border-radius: 50%;
-  box-shadow: 0 0 15px 6px #ff66b2;
-  bottom: 10px;
-  left: 175px;
-  transition: left 0.1s;
-  z-index: 2;
-}
-
-/* Bubble around the fairy player */
-#player::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 80%);
-  box-shadow: 0 0 15px 6px rgba(255, 182, 217, 0.7);
-  filter: drop-shadow(0 0 5px #ff99cc);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Wings for the fairy using after pseudo element */
-#player::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  width: 20px;
-  height: 30px;
-  background: radial-gradient(circle at center, #ffe6f0, #ff99cc);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  opacity: 0.7;
-  filter: drop-shadow(0 0 3px #ff99cc);
-  left: -15px;
-  transform: rotate(-20deg);
-  pointer-events: none;
-}
-
-/* Bubble is a glowing star bubble with sparkle effect */
-#bubble {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background: radial-gradient(circle at center, #fff1f8 40%, #ff66b2 90%);
-  border-radius: 50%;
-  box-shadow: 0 0 15px 5px #ff99cc;
-  top: 0;
-  left: 100px;
-  filter: drop-shadow(0 0 3px #ff66b2);
-  z-index: 1;
-}
-
-/* Add star sparkle inside bubble using before pseudo element */
-#bubble::before {
-  content: '\2605'; /* Unicode star */
-  position: absolute;
-  top: 3px;
-  left: 7px;
-  font-size: 16px;
-  color: #ff66b2;
-  text-shadow: 0 0 5px #ff99cc;
-}
-
-/* Add floating star sparkles in background */
-@keyframes twinkle {
-  0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
-  50% { opacity: 0.3; transform: scale(1.2) rotate(20deg); }
-}
-
-.star {
-  position: absolute;
-  color: #ff99cc;
-  font-size: 12px;
-  user-select: none;
-  animation: twinkle 3s infinite ease-in-out;
-  filter: drop-shadow(0 0 2px #ff66b2);
+#game-canvas {
+    background-color: #ffd9e6;
+    display: block;
+    margin: 0 auto 10px auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #b30059;
 }
 
 #info {
-  margin-top: 15px;
-  font-size: 18px;
-  color: #cc3366;
-}
-
-#message {
-  margin: 10px 0;
-  font-weight: bold;
-  min-height: 24px;
-  color: #cc3366;
-  text-shadow: 0 0 5px #ff99cc;
+    font-size: 18px;
 }
 
 #start-button {
-  background-color: #ff66b2;
-  color: white;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  box-shadow: 0 0 10px #ff99cc;
+    background-color: #ff66b3;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 3px #b30059;
+    transition: background-color 0.3s ease;
 }
 
 #start-button:hover {
-  background-color: #cc3366;
+    background-color: #e655a2;
+}
+
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 24px;
+    color: #b30059;
 }
