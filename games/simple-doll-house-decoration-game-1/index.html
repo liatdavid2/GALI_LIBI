@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simple Doll House Decoration Game</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>Doll House Decoration Game</h1>
+    <p>Drag and drop the furniture pieces into the doll house rooms!</p>
+    <div id="game-container">
+        <div id="house">
+            <div class="room" id="living-room">
+                <div class="room-label">Living Room</div>
+            </div>
+            <div class="room" id="bedroom">
+                <div class="room-label">Bedroom</div>
+            </div>
+            <div class="room" id="kitchen">
+                <div class="room-label">Kitchen</div>
+            </div>
+        </div>
+        <div id="furniture-pieces">
+            <div class="furniture" draggable="true" data-room="living-room" id="sofa">Sofa</div>
+            <div class="furniture" draggable="true" data-room="bedroom" id="bed">Bed</div>
+            <div class="furniture" draggable="true" data-room="kitchen" id="table">Table</div>
+        </div>
+    </div>
+    <div id="info">
+        <button id="start-btn">Start Game</button>
+        <div id="score">Score: 0 / 3</div>
+        <div id="message"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
