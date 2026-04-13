@@ -2,6 +2,7 @@
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 const scoreDiv = document.getElementById('score');
+const missedDiv = document.getElementById('missed');
 const startBtn = document.getElementById('start-btn');
 const messageDiv = document.getElementById('message');
 
@@ -21,9 +22,11 @@ const fairy = {
 let stars = [];
 let bubbles = [];
 let score = 0;
+let missed = 0;
 let gameActive = false;
 let gameOver = false;
 let winScore = 10;
+let maxMissed = 3;
 let animationId;
 
 function drawFairy() {
@@ -144,8 +147,8 @@ function checkCollisions() {
     }
     // Missed star
     if (s.y - s.radius > GAME_HEIGHT) {
-      endGame(false);
-      return;
+      missed++;
+      stars.splice(i,1);
     }
   }
   // Bubble collision
@@ -158,8 +161,8 @@ function checkCollisions() {
     }
     // Missed bubble
     if (b.y - b.radius > GAME_HEIGHT) {
-      endGame(false);
-      return;
+      missed++;
+      bubbles.splice(i,1);
     }
   }
 }
@@ -179,6 +182,7 @@ function isColliding(fairy, obj) {
 
 function updateScore() {
   scoreDiv.textContent = `Score: ${score}`;
+  missedDiv.textContent = `Missed: ${missed}`;
 }
 
 let starTimer = 0;
@@ -210,6 +214,11 @@ function gameLoop() {
     endGame(true);
     return;
   }
+  // Lose condition: missed too many
+  if (missed >= maxMissed) {
+    endGame(false);
+    return;
+  }
   if (gameActive) {
     animationId = requestAnimationFrame(gameLoop);
   }
@@ -220,6 +229,7 @@ function startGame() {
   stars = [];
   bubbles = [];
   score = 0;
+  missed = 0;
   fairy.x = GAME_WIDTH/2;
   fairy.y = GAME_HEIGHT-60;
   fairy.dx = 0;
@@ -240,7 +250,7 @@ function endGame(win) {
   if (win) {
     messageDiv.textContent = 'You Win! The fairy is happy! ✨';
   } else {
-    messageDiv.textContent = 'Oh no! You missed one! Try again!';
+    messageDiv.textContent = 'Oh no! You missed too many! Try again!';
   }
   startBtn.textContent = 'Restart';
   startBtn.style.display = 'inline-block';
@@ -261,3 +271,4 @@ startBtn.addEventListener('click', startGame);
 // Draw initial fairy
 clearCanvas();
 drawFairy();
+missedDiv.textContent = 'Missed: 0';
