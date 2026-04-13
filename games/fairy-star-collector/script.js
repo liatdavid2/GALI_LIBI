@@ -1,69 +1,46 @@
-// Fairy Star Collector Game
+// Catch the Bubbles Game
 
-const fairy = document.getElementById('fairy');
-const star = document.getElementById('star');
-const cloud = document.getElementById('cloud');
+const player = document.getElementById('player');
+const bubble = document.getElementById('bubble');
 const scoreSpan = document.getElementById('score');
-const livesSpan = document.getElementById('lives');
 const messageDiv = document.getElementById('message');
 const startButton = document.getElementById('start-button');
 const gameContainer = document.getElementById('game-container');
 
 const gameWidth = 400;
 const gameHeight = 300;
-const fairyWidth = 40;
-const fairyHeight = 40;
-const starSize = 30;
-const cloudWidth = 60;
-const cloudHeight = 40;
+const playerWidth = 50;
+const playerHeight = 50;
+const bubbleSize = 30;
 
 let score = 0;
-let lives = 3;
 let gameInterval = null;
-let cloudSpeed = 2;
-let starSpeed = 3; // increased initial star speed
+let bubbleSpeed = 3;
 let isGameRunning = false;
 
-// Positions
-let fairyY = gameHeight - fairyHeight - 10; // initial vertical position
-let starX = 50;
-let starY = 20;
-let cloudX = 300;
-let cloudY = 50;
+// Player horizontal position
+let playerX = (gameWidth - playerWidth) / 2;
+// Bubble position
+let bubbleX = Math.floor(Math.random() * (gameWidth - bubbleSize));
+let bubbleY = 0;
 
-// Move fairy up or down within boundaries
-function moveFairy(direction) {
+// Move player left or right within boundaries
+function movePlayer(direction) {
   if (!isGameRunning) return;
-  if (direction === 'up') {
-    fairyY = Math.max(0, fairyY - 20);
-  } else if (direction === 'down') {
-    fairyY = Math.min(gameHeight - fairyHeight, fairyY + 20);
+  if (direction === 'left') {
+    playerX = Math.max(0, playerX - 20);
+  } else if (direction === 'right') {
+    playerX = Math.min(gameWidth - playerWidth, playerX + 20);
   }
-  fairy.style.top = fairyY + 'px';
+  player.style.left = playerX + 'px';
 }
 
-// Random position helper
-function randomPosition(maxX, maxY) {
-  return {
-    x: Math.floor(Math.random() * maxX),
-    y: Math.floor(Math.random() * maxY),
-  };
-}
-
-// Reset star to a random vertical position and fixed horizontal position
-function resetStar() {
-  starX = Math.floor(Math.random() * (gameWidth - starSize));
-  starY = 0;
-  star.style.left = starX + 'px';
-  star.style.top = starY + 'px';
-}
-
-// Reset cloud to a random vertical position and fixed horizontal position
-function resetCloud() {
-  cloudX = Math.floor(Math.random() * (gameWidth - cloudWidth));
-  cloudY = 0;
-  cloud.style.left = cloudX + 'px';
-  cloud.style.top = cloudY + 'px';
+// Reset bubble to top with random horizontal position
+function resetBubble() {
+  bubbleX = Math.floor(Math.random() * (gameWidth - bubbleSize));
+  bubbleY = 0;
+  bubble.style.left = bubbleX + 'px';
+  bubble.style.top = bubbleY + 'px';
 }
 
 // Check collision between two rectangles
@@ -78,54 +55,31 @@ function isColliding(rect1, rect2) {
 
 // Update game frame
 function updateGame() {
-  // Move star down
-  starY += starSpeed;
-  if (starY > gameHeight) {
-    resetStar();
+  // Move bubble down
+  bubbleY += bubbleSpeed;
+  if (bubbleY > gameHeight) {
+    // Missed bubble, reset
+    resetBubble();
   }
-  star.style.top = starY + 'px';
+  bubble.style.top = bubbleY + 'px';
 
-  // Move cloud down
-  cloudY += cloudSpeed;
-  if (cloudY > gameHeight) {
-    resetCloud();
-  }
-  cloud.style.top = cloudY + 'px';
-  cloud.style.left = cloudX + 'px';
+  // Player rectangle
+  const playerRect = { x: playerX, y: gameHeight - playerHeight - 10, width: playerWidth, height: playerHeight };
+  // Bubble rectangle
+  const bubbleRect = { x: bubbleX, y: bubbleY, width: bubbleSize, height: bubbleSize };
 
-  // Fairy rectangle
-  const fairyRect = { x: 180, y: fairyY, width: fairyWidth, height: fairyHeight };
-
-  // Star rectangle
-  const starRect = { x: starX, y: starY, width: starSize, height: starSize };
-
-  // Cloud rectangle
-  const cloudRect = { x: cloudX, y: cloudY, width: cloudWidth, height: cloudHeight };
-
-  // Check collision with star
-  if (isColliding(fairyRect, starRect)) {
+  // Check collision with bubble
+  if (isColliding(playerRect, bubbleRect)) {
     score += 1;
     scoreSpan.textContent = score;
-    resetStar();
-    // Increase speed slightly every 5 points
-    if (score % 5 === 0) {
-      cloudSpeed += 0.5;
-      starSpeed += 0.3;
+    messageDiv.textContent = 'Great catch! 🎉';
+    resetBubble();
+    // Increase speed every 3 points
+    if (score % 3 === 0) {
+      bubbleSpeed += 0.5;
     }
-    if (score >= 10) {
+    if (score >= 15) {
       endGame(true);
-    }
-  }
-
-  // Check collision with cloud
-  if (isColliding(fairyRect, cloudRect)) {
-    lives -= 1;
-    livesSpan.textContent = lives;
-    if (lives <= 0) {
-      endGame(false);
-    } else {
-      messageDiv.textContent = `Ouch! The fairy hit a cloud! Lives left: ${lives}`;
-      resetCloud();
     }
   }
 }
@@ -133,18 +87,13 @@ function updateGame() {
 // Start or restart the game
 function startGame() {
   score = 0;
-  lives = 3;
   scoreSpan.textContent = score;
-  livesSpan.textContent = lives;
   messageDiv.textContent = '';
   isGameRunning = true;
-  cloudSpeed = 2;
-  starSpeed = 3; // faster initial speed
-  fairyY = gameHeight - fairyHeight - 10;
-  fairy.style.top = fairyY + 'px';
-  fairy.style.left = '180px';
-  resetStar();
-  resetCloud();
+  bubbleSpeed = 3;
+  playerX = (gameWidth - playerWidth) / 2;
+  player.style.left = playerX + 'px';
+  resetBubble();
   startButton.disabled = true;
   startButton.textContent = 'Game Running...';
 
@@ -159,21 +108,21 @@ function endGame(won) {
   isGameRunning = false;
   clearInterval(gameInterval);
   if (won) {
-    messageDiv.textContent = 'You won! The fairy collected 10 stars! 🌟';
+    messageDiv.textContent = 'You won! You caught 15 bubbles! 🎊';
   } else {
-    messageDiv.textContent = 'Oh no! The fairy lost all lives! Game over. ☁️';
+    messageDiv.textContent = 'Game over!';
   }
   startButton.disabled = false;
   startButton.textContent = 'Restart Game';
 }
 
-// Keyboard controls for fairy
+// Keyboard controls for player
 window.addEventListener('keydown', (e) => {
   if (!isGameRunning) return;
-  if (e.key === 'ArrowUp' || e.key === 'w') {
-    moveFairy('up');
-  } else if (e.key === 'ArrowDown' || e.key === 's') {
-    moveFairy('down');
+  if (e.key === 'ArrowLeft' || e.key === 'a') {
+    movePlayer('left');
+  } else if (e.key === 'ArrowRight' || e.key === 'd') {
+    movePlayer('right');
   }
 });
 
@@ -182,6 +131,6 @@ startButton.addEventListener('click', () => {
   startGame();
 });
 
-// Initialize fairy position
-fairy.style.left = '180px';
-fairy.style.top = fairyY + 'px';
+// Initialize player position
+player.style.left = playerX + 'px';
+player.style.bottom = '10px';
