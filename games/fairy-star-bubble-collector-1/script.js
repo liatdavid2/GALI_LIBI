@@ -9,12 +9,16 @@ const messageDiv = document.getElementById('message');
 const GAME_WIDTH = canvas.width;
 const GAME_HEIGHT = canvas.height;
 
+// Load fairy image
+const fairyImg = new Image();
+fairyImg.src = 'https://image.similarpng.com/file/similarpng/very-thumbnail/2021/05/Cute-little-fairy-with-beautiful-long-braided-hairstyle-holding-a-lantern-on-transparent-background-PNG.png';
+
 // Fairy settings
 const fairy = {
-  x: GAME_WIDTH/2,
-  y: GAME_HEIGHT-60,
-  width: 38,
-  height: 38,
+  x: GAME_WIDTH / 2,
+  y: GAME_HEIGHT - 60,
+  width: 60,
+  height: 80,
   speed: 5,
   dx: 0
 };
@@ -31,38 +35,16 @@ let maxMissed = 999999; // Effectively disables losing by missing
 let animationId;
 
 function drawFairy() {
-  // Fairy: body (circle), wings (ellipses), head (circle), wand (line + star)
-  // Body
-  ctx.save();
-  ctx.translate(fairy.x, fairy.y);
-  // Wings
-  ctx.globalAlpha = 0.5;
-  ctx.fillStyle = '#e0caff';
-  ctx.beginPath();
-  ctx.ellipse(-12, 0, 10, 18, Math.PI/6, 0, Math.PI*2);
-  ctx.ellipse(12, 0, 10, 18, -Math.PI/6, 0, Math.PI*2);
-  ctx.fill();
-  ctx.globalAlpha = 1;
-  // Body
-  ctx.fillStyle = '#fff8c6';
-  ctx.beginPath();
-  ctx.ellipse(0, 10, 10, 18, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Head
-  ctx.beginPath();
-  ctx.arc(0, -8, 9, 0, Math.PI*2);
-  ctx.fillStyle = '#ffe2fa';
-  ctx.fill();
-  // Wand (stick)
-  ctx.strokeStyle = '#ffe066';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(7, 10);
-  ctx.lineTo(18, 24);
-  ctx.stroke();
-  // Wand (star)
-  drawStar(ctx, 18, 24, 5, 6, 2.5, '#ffe066');
-  ctx.restore();
+  // Draw the fairy image centered at fairy.x, fairy.y
+  if (fairyImg.complete) {
+    ctx.drawImage(fairyImg, fairy.x - fairy.width / 2, fairy.y - fairy.height / 2, fairy.width, fairy.height);
+  } else {
+    // If image not loaded yet, draw a placeholder circle
+    ctx.fillStyle = '#fff8c6';
+    ctx.beginPath();
+    ctx.arc(fairy.x, fairy.y, 20, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
@@ -94,7 +76,7 @@ function drawBubble(b) {
   ctx.save();
   ctx.globalAlpha = 0.7;
   ctx.beginPath();
-  ctx.arc(b.x, b.y, b.radius, 0, Math.PI*2);
+  ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
   ctx.fillStyle = '#b7e4fb';
   ctx.fill();
   ctx.globalAlpha = 1;
@@ -105,7 +87,7 @@ function drawBubble(b) {
 }
 
 function drawFallingStar(s) {
-  drawStar(ctx, s.x, s.y, 5, s.radius, s.radius/2, '#ffe066');
+  drawStar(ctx, s.x, s.y, 5, s.radius, s.radius / 2, '#ffe066');
 }
 
 function clearCanvas() {
@@ -115,8 +97,8 @@ function clearCanvas() {
 function moveFairy() {
   fairy.x += fairy.dx;
   // Keep inside bounds
-  if (fairy.x < fairy.width/2) fairy.x = fairy.width/2;
-  if (fairy.x > GAME_WIDTH - fairy.width/2) fairy.x = GAME_WIDTH - fairy.width/2;
+  if (fairy.x < fairy.width / 2) fairy.x = fairy.width / 2;
+  if (fairy.x > GAME_WIDTH - fairy.width / 2) fairy.x = GAME_WIDTH - fairy.width / 2;
 }
 
 function moveObjects() {
@@ -125,45 +107,45 @@ function moveObjects() {
 }
 
 function spawnStar() {
-  let x = Math.random() * (GAME_WIDTH-30) + 15;
-  let speed = 2 + Math.random()*1.5;
+  let x = Math.random() * (GAME_WIDTH - 30) + 15;
+  let speed = 2 + Math.random() * 1.5;
   stars.push({ x, y: -20, radius: 13, speed });
 }
 
 function spawnBubble() {
-  let x = Math.random() * (GAME_WIDTH-30) + 15;
+  let x = Math.random() * (GAME_WIDTH - 30) + 15;
   let speed = 1.5 + Math.random();
-  let radius = 12 + Math.random()*7;
+  let radius = 12 + Math.random() * 7;
   bubbles.push({ x, y: -20, radius, speed });
 }
 
 function checkCollisions() {
   // Star collision
-  for (let i = stars.length-1; i >= 0; i--) {
+  for (let i = stars.length - 1; i >= 0; i--) {
     let s = stars[i];
     if (isColliding(fairy, s)) {
       score++;
-      stars.splice(i,1);
+      stars.splice(i, 1);
       continue;
     }
     // Missed star: do not count missed anymore
     if (s.y - s.radius > GAME_HEIGHT) {
       // Do not increment missed
-      stars.splice(i,1);
+      stars.splice(i, 1);
     }
   }
   // Bubble collision
-  for (let i = bubbles.length-1; i >= 0; i--) {
+  for (let i = bubbles.length - 1; i >= 0; i--) {
     let b = bubbles[i];
     if (isColliding(fairy, b)) {
       score++;
-      bubbles.splice(i,1);
+      bubbles.splice(i, 1);
       continue;
     }
     // Missed bubble: do not count missed anymore
     if (b.y - b.radius > GAME_HEIGHT) {
       // Do not increment missed
-      bubbles.splice(i,1);
+      bubbles.splice(i, 1);
     }
   }
 }
@@ -172,13 +154,13 @@ function isColliding(fairy, obj) {
   // Simple circle-rectangle collision
   let distX = Math.abs(obj.x - fairy.x);
   let distY = Math.abs(obj.y - fairy.y);
-  if (distX > (fairy.width/2 + obj.radius)) return false;
-  if (distY > (fairy.height/2 + obj.radius)) return false;
-  if (distX <= (fairy.width/2)) return true;
-  if (distY <= (fairy.height/2)) return true;
-  let dx = distX - fairy.width/2;
-  let dy = distY - fairy.height/2;
-  return (dx*dx + dy*dy <= obj.radius*obj.radius);
+  if (distX > (fairy.width / 2 + obj.radius)) return false;
+  if (distY > (fairy.height / 2 + obj.radius)) return false;
+  if (distX <= (fairy.width / 2)) return true;
+  if (distY <= (fairy.height / 2)) return true;
+  let dx = distX - fairy.width / 2;
+  let dy = distY - fairy.height / 2;
+  return (dx * dx + dy * dy <= obj.radius * obj.radius);
 }
 
 function updateScore() {
@@ -231,8 +213,8 @@ function startGame() {
   bubbles = [];
   score = 0;
   missed = 0;
-  fairy.x = GAME_WIDTH/2;
-  fairy.y = GAME_HEIGHT-60;
+  fairy.x = GAME_WIDTH / 2;
+  fairy.y = GAME_HEIGHT - 60;
   fairy.dx = 0;
   gameActive = true;
   gameOver = false;
