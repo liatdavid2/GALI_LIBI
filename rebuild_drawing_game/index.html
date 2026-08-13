@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fff7fb" />
+  <title>בונים מחדש את הציור</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">משחק פאזל מהציור שלך ✨</p>
+        <h1>בונים מחדש את הציור</h1>
+        <p class="subtitle">גררי כל חלק למקום הנכון. כשתסיימי — הציור כולו יופיע!</p>
+      </div>
+      <div class="stars" aria-hidden="true">★ ♥ ✦</div>
+    </header>
+
+    <section class="game-shell">
+      <aside class="side-panel">
+        <div class="preview-card">
+          <h2>הציור המקורי</h2>
+          <img src="assets/drawing.jpg" alt="הציור המקורי" />
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-row">
+            <strong>התקדמות</strong>
+            <span id="progressText">0/9</span>
+          </div>
+          <div class="progress-track" aria-label="התקדמות במשחק">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="shuffleBtn" class="btn secondary" type="button">🔄 התחלה מחדש</button>
+          <button id="hintBtn" class="btn hint" type="button">💡 רמז</button>
+          <button id="checkBtn" class="btn primary" type="button">✓ בדקי</button>
+        </div>
+      </aside>
+
+      <section class="play-area" aria-label="לוח המשחק">
+        <div class="board-wrap">
+          <div id="board" class="board" aria-label="פאזל 3 על 3"></div>
+          <div id="hintOverlay" class="hint-overlay" aria-hidden="true"></div>
+        </div>
+
+        <div class="tray-wrap">
+          <h2>החלקים</h2>
+          <p>אפשר לגרור, או ללחוץ על חלק ואז על המקום המתאים.</p>
+          <div id="tray" class="tray" aria-label="חלקי הפאזל"></div>
+        </div>
+      </section>
+    </section>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <div id="winModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+      <div class="modal-card">
+        <div class="confetti" aria-hidden="true">✨ ⭐ 💗 ⭐ ✨</div>
+        <h2 id="winTitle">כל הכבוד!</h2>
+        <p>בנית מחדש את הציור בדיוק!</p>
+        <img src="assets/drawing.jpg" alt="הציור שהושלם" />
+        <button id="playAgainBtn" class="btn primary" type="button">לשחק שוב</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
