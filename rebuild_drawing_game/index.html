@@ -4,25 +4,65 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#fff7fb" />
-  <title>בונים מחדש את הציור</title>
+  <title>הופכים ציור לפאזל</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="app">
     <header class="hero">
       <div>
-        <p class="eyebrow">משחק פאזל מהציור שלך ✨</p>
-        <h1>בונים מחדש את הציור</h1>
-        <p class="subtitle">גררי כל חלק למקום הנכון. כשתסיימי — הציור כולו יופיע!</p>
+        <p class="eyebrow">משחק פאזל אישי ✨</p>
+        <h1>הופכים כל ציור לפאזל</h1>
+        <p class="subtitle">מעלים ציור או תמונה, בוחרים רמה — והמשחק נבנה אוטומטית.</p>
       </div>
-      <div class="stars" aria-hidden="true">★ ♥ ✦</div>
+      <div class="hero-icons" aria-hidden="true">🧩 🎨 ⭐</div>
     </header>
 
-    <section class="game-shell">
+    <section class="setup-card">
+      <div class="upload-box">
+        <label class="upload-label" for="imageInput">
+          <span class="upload-icon">📷</span>
+          <strong>בחרי ציור או תמונה</strong>
+          <span>JPG / PNG / WEBP</span>
+        </label>
+        <input id="imageInput" type="file" accept="image/*" />
+      </div>
+
+      <div class="controls">
+        <label>
+          <span>רמת קושי</span>
+          <select id="sizeSelect">
+            <option value="2">קל — 4 חלקים</option>
+            <option value="3" selected>רגיל — 9 חלקים</option>
+            <option value="4">קשה — 16 חלקים</option>
+          </select>
+        </label>
+
+        <label>
+          <span>תצוגת רמז</span>
+          <select id="hintMode">
+            <option value="faint" selected>ציור חלש ברקע</option>
+            <option value="none">ללא ציור ברקע</option>
+          </select>
+        </label>
+
+        <button id="createBtn" class="btn primary" type="button" disabled>🧩 צרי פאזל</button>
+      </div>
+
+      <div id="imagePreviewWrap" class="image-preview-wrap hidden">
+        <div>
+          <strong>התמונה שנבחרה</strong>
+          <span id="fileName"></span>
+        </div>
+        <img id="imagePreview" alt="תצוגה מקדימה" />
+      </div>
+    </section>
+
+    <section id="gameSection" class="game-shell hidden">
       <aside class="side-panel">
         <div class="preview-card">
           <h2>הציור המקורי</h2>
-          <img src="assets/drawing.jpg" alt="הציור המקורי" />
+          <img id="originalPreview" alt="הציור המקורי" />
         </div>
 
         <div class="progress-card">
@@ -30,27 +70,27 @@
             <strong>התקדמות</strong>
             <span id="progressText">0/9</span>
           </div>
-          <div class="progress-track" aria-label="התקדמות במשחק">
+          <div class="progress-track">
             <div id="progressBar" class="progress-bar"></div>
           </div>
         </div>
 
         <div class="buttons">
-          <button id="shuffleBtn" class="btn secondary" type="button">🔄 התחלה מחדש</button>
+          <button id="restartBtn" class="btn secondary" type="button">🔄 ערבבי מחדש</button>
           <button id="hintBtn" class="btn hint" type="button">💡 רמז</button>
-          <button id="checkBtn" class="btn primary" type="button">✓ בדקי</button>
+          <button id="newImageBtn" class="btn soft" type="button">🖼️ תמונה חדשה</button>
         </div>
       </aside>
 
-      <section class="play-area" aria-label="לוח המשחק">
+      <section class="play-area">
         <div class="board-wrap">
-          <div id="board" class="board" aria-label="פאזל 3 על 3"></div>
+          <div id="board" class="board" aria-label="לוח הפאזל"></div>
           <div id="hintOverlay" class="hint-overlay" aria-hidden="true"></div>
         </div>
 
         <div class="tray-wrap">
           <h2>החלקים</h2>
-          <p>אפשר לגרור, או ללחוץ על חלק ואז על המקום המתאים.</p>
+          <p>גררי חלק למקום המתאים. אפשר גם ללחוץ על חלק ואז על משבצת.</p>
           <div id="tray" class="tray" aria-label="חלקי הפאזל"></div>
         </div>
       </section>
@@ -62,9 +102,12 @@
       <div class="modal-card">
         <div class="confetti" aria-hidden="true">✨ ⭐ 💗 ⭐ ✨</div>
         <h2 id="winTitle">כל הכבוד!</h2>
-        <p>בנית מחדש את הציור בדיוק!</p>
-        <img src="assets/drawing.jpg" alt="הציור שהושלם" />
-        <button id="playAgainBtn" class="btn primary" type="button">לשחק שוב</button>
+        <p>סיימת את הפאזל!</p>
+        <img id="winImage" alt="הציור שהושלם" />
+        <div class="modal-actions">
+          <button id="playAgainBtn" class="btn primary" type="button">לשחק שוב</button>
+          <button id="anotherImageBtn" class="btn secondary" type="button">תמונה אחרת</button>
+        </div>
       </div>
     </div>
   </main>
